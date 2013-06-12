@@ -6,8 +6,10 @@
 #include <QTextCodec>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QDropEvent>
 #include <QFileDialog>
 #include <QFile>
+#include <QUrl>
 #include <QProgressDialog>
 #include <QFuture>
 #include <QFutureWatcher>
@@ -30,6 +32,8 @@ public slots:
 
 protected:
     void changeEvent(QEvent *e);
+    void dragEnterEvent(QDragEnterEvent *);
+    void dropEvent(QDropEvent *);
 
 private:
     Ui::MainWindow *ui;

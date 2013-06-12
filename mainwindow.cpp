@@ -56,6 +56,48 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
+void MainWindow::dragEnterEvent(QDragEnterEvent* event)
+{
+    if (event->mimeData()->hasUrls())
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent* event)
+{
+    QList<QUrl> filenames = event->mimeData()->urls();
+
+    foreach(QUrl f, filenames)
+    {
+        QString filename = f.toLocalFile();
+
+        if(filename.endsWith(".jpg",Qt::CaseInsensitive) ||
+                filename.endsWith(".jpeg",Qt::CaseInsensitive) ||
+                filename.endsWith(".png",Qt::CaseInsensitive) ||
+                filename.endsWith(".gif",Qt::CaseInsensitive) ||
+                filename.endsWith(".tif",Qt::CaseInsensitive) ||
+                filename.endsWith(".tiff",Qt::CaseInsensitive) ||
+                filename.endsWith(".bmp",Qt::CaseInsensitive))
+        {
+            if(ui->listWidget->findItems(filename,Qt::MatchExactly).isEmpty())
+            {
+                ui->listWidget->addItem(filename);
+                event->acceptProposedAction();
+            }
+            else
+            {
+                event->ignore();
+            }
+
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+}
+
 void MainWindow::on_pushButton_AddFiles_clicked()
 {
     QStringList files = QFileDialog::getOpenFileNames(this,tr("Відкрити"),QDir::homePath(),tr("Зображення (*.bmp *.png *.jpg)"));
